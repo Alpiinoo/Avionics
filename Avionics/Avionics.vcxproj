@@ -10,6 +10,12 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="core\simcore.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{797D812C-D1E8-4283-917B-5CCF69303A34}</ProjectGuid>
     <Keyword>QtVS_v304</Keyword>
