@@ -5,7 +5,7 @@ Engine::Engine(QObject* parent)
     m_running(true),
     m_failCode(0),
     m_throttle(0.0),
-    m_N1(20.0),
+    m_N1(30.0),
     m_N2(60.0),
     m_EGT(400.0),
     m_FuelFlow(300.0),
@@ -25,6 +25,12 @@ void Engine::shutdown() {
 void Engine::restart() {
     m_running = true;
     if (m_N2 < 10.0) m_N2 = 10.0;
+}
+
+//FADEC
+void Engine::forceSyncN1(double n1)
+{
+    m_N1 = n1;
 }
 
 void Engine::update(double dt, double altitude_ft) {

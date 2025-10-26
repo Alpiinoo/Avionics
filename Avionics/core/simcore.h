@@ -2,6 +2,7 @@
 #include <QObject>
 #include <QTimer>
 #include "../Engine/Engine.h"
+#include "../FADEC/FADEC.h"
 
 class SimCore : public QObject
 {
@@ -12,6 +13,8 @@ public:
 
 	Engine engine1;
 	Engine engine2;
+
+	FADEC fadec;
 
 	double pitch_deg;
 	double roll_deg;

@@ -13,6 +13,9 @@ public:
 	void restart();
 	void update(double dt, double altitude_ft);
 
+	//FADEC
+	void forceSyncN1(double n1);
+
 	double N1() const { return m_N1; }
 	double N2() const { return m_N2; }
 	double EGT() const { return m_EGT; }
