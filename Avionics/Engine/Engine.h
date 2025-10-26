@@ -40,7 +40,7 @@ private:
 
 	static constexpr double N1_max = 106.0;
 	static constexpr double N2_max = 100.0;
-	static constexpr double tau_N1 = 5.0;
+	static constexpr double tau_N1 = 1.5; //SPOOL TIME
 	static constexpr double tau_N2 = 7.5;
 	static constexpr double idleEGT = 400.0;
 	static constexpr double idleOil = 45.0;

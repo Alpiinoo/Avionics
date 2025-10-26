@@ -78,14 +78,14 @@ void EICASWidget::paintEvent(QPaintEvent*)
             // EGT
             y += lineHeight;
             double egt = eng->EGT();
-            QColor egtColor = (egt > 750.0) ? QColor(255, 0, 0) : QColor(0, 255, 0);
+            QColor egtColor = (egt > 980.0) ? QColor(255, 0, 0) : QColor(0, 255, 0);
             p.setPen(egtColor);
             p.drawText(x, y, QString("EGT: %1 \u00B0C").arg(egt, 0, 'f', 0));
 
             // Fuel Flow
             y += lineHeight;
             p.setPen(QColor(0, 255, 0));
-            p.drawText(x, y, QString("FF: %1").arg(eng->FuelFlow(), 0, 'f', 1));
+            p.drawText(x, y, QString("FF: %1").arg(eng->FuelFlow() / 100.0, 0, 'f', 2));
 
             // Oil Pressure
             y += lineHeight;

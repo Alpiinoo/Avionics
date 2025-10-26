@@ -26,7 +26,7 @@ void Engine::shutdown() {
 
 void Engine::restart() {
     m_running = true;
-    if (m_N2 < 10.0) m_N2 = 10.0;
+    if (m_N2 < 20.0) m_N2 = 20.0;
 }
 
 //FADEC
@@ -50,7 +50,7 @@ void Engine::update(double dt, double altitude_ft) {
     double altFactor = 1.0 - (altitude_ft / 40000.0) * 0.3;
     if (altFactor < 0.5) altFactor = 0.5;
 
-    // --- FADEC BOOST LOGIC ---
+    //FADEC BOOST?
     double N1_target = m_throttle * N1_max * altFactor;
 
     //%105 spool overshoot
@@ -67,11 +67,14 @@ void Engine::update(double dt, double altitude_ft) {
     m_N2 += (N2_target - m_N2) * alpha2;
 
     m_FuelFlow = 250 + 0.02 * m_N2 * m_throttle * 27000.0 / 1000.0;
-    double targetEGT = idleEGT + 600.0 * m_throttle + 0.3 * (m_N2 - 60.0);
-    double heatingRate = (targetEGT > m_EGT) ? 0.15 : 0.25; //inertia
+
+    double targetEGT = idleEGT + 300.0 * m_throttle + 0.03 * (m_N2 - 60.0);
+    double diff = targetEGT - m_EGT;
+    double heatingRate = (diff > 0) ? 0.25 : 0.10;
     m_EGT += (targetEGT - m_EGT) * heatingRate * dt;
-    if (m_throttle > 0.98)
-        m_EGT += 0.5; 
+    if (m_throttle > 0.99)
+        m_EGT += 60.0 * dt;
+
     m_OilPress = idleOil + (maxOil - idleOil) * (m_N2 / 100.0);
     m_OilTemp = 60 + 0.4 * (m_EGT - 400.0);
 
