@@ -1,13 +1,17 @@
 #pragma once
 #include <QObject>
 #include <QTimer>
+#include "../Engine/Engine.h"
 
-class Simcore : public QObject
+class SimCore : public QObject
 {
 	Q_OBJECT
 
 public:
 	explicit SimCore(QObject* parent = nullptr);
+
+	Engine engine1;
+	Engine engine2;
 
 	double pitch_deg;
 	double roll_deg;
