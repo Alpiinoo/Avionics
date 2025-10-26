@@ -38,7 +38,7 @@ private:
 	double m_EGT, m_FuelFlow;
 	double m_OilPress, m_OilTemp;
 
-	static constexpr double N1_max = 100.0;
+	static constexpr double N1_max = 106.0;
 	static constexpr double N2_max = 100.0;
 	static constexpr double tau_N1 = 5.0;
 	static constexpr double tau_N2 = 7.5;

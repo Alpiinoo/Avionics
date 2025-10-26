@@ -23,12 +23,16 @@
     <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="FADEC\FADEC.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="UI\EICASWidget.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Engine\Engine.h" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="FADEC\FADEC.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="UI\EICASWidget.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{797D812C-D1E8-4283-917B-5CCF69303A34}</ProjectGuid>

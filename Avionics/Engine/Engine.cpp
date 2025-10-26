@@ -15,7 +15,9 @@ Engine::Engine(QObject* parent)
 }
 
 void Engine::setThrottle(double t) {
+    const double idle = 0.25;
     m_throttle = qBound(0.0, t, 1.0);
+    m_throttle = idle + m_throttle * (1.0 - idle);
 }
 
 void Engine::shutdown() {
@@ -44,12 +46,20 @@ void Engine::update(double dt, double altitude_ft) {
         return;
     }
 
+
     double altFactor = 1.0 - (altitude_ft / 40000.0) * 0.3;
     if (altFactor < 0.5) altFactor = 0.5;
 
+    // --- FADEC BOOST LOGIC ---
     double N1_target = m_throttle * N1_max * altFactor;
+
+    //%105 spool overshoot
+    if (m_throttle > 0.98)
+        N1_target *= 1.05;
+
     double N2_target = (0.6 * m_throttle + 0.4) * N2_max;
 
+    // inertia filter
     double alpha1 = dt / (tau_N1 + dt);
     double alpha2 = dt / (tau_N2 + dt);
 
@@ -57,15 +67,19 @@ void Engine::update(double dt, double altitude_ft) {
     m_N2 += (N2_target - m_N2) * alpha2;
 
     m_FuelFlow = 250 + 0.02 * m_N2 * m_throttle * 27000.0 / 1000.0;
-    m_EGT = idleEGT + 250 * m_throttle + 0.1 * m_N2;
+    double targetEGT = idleEGT + 600.0 * m_throttle + 0.3 * (m_N2 - 60.0);
+    double heatingRate = (targetEGT > m_EGT) ? 0.15 : 0.25; //inertia
+    m_EGT += (targetEGT - m_EGT) * heatingRate * dt;
+    if (m_throttle > 0.98)
+        m_EGT += 0.5; 
     m_OilPress = idleOil + (maxOil - idleOil) * (m_N2 / 100.0);
     m_OilTemp = 60 + 0.4 * (m_EGT - 400.0);
 
-    if (m_EGT > 950.0) {
+    /*if (m_EGT > 1550.0) {
         m_running = false;
         m_failCode = 1;
         emit engineFailed(1);
-    }
+    }*/
 
     if (m_OilPress < 20.0 && m_throttle > 0.4) {
         m_running = false;
